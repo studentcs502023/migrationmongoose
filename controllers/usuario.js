@@ -8,12 +8,22 @@ const getUsuario= async (req,res)=>{
     }
 }
 
+const getUsuarioEmail= async (req,res)=>{
+    try {
+        const {email}=req.query
+        const usuarios= await Usuario.find({email})
+        res.json({usuarios})
+    } catch (error) {
+        res.status(400).json({error})
+    }
+}
+
 const postUsuario=async(req,res)=>{
     try {
-         const {nombre,edad,fechanacimiento,email,estado}=req.body
+         const {nombre,edad,fechanacimiento,email}=req.body
 
         const usuario= new Usuario({
-            nombre,edad,fechanacimiento,email,estado
+            nombre,edad,fechanacimiento,email
         })
 
         await usuario.save()
@@ -82,4 +92,4 @@ const deleteUsuario=async(req,res)=>{
 
 }
 
-export {getUsuario,postUsuario,putUsuario,putUsuarioActivar,putUsuarioInactivar,deleteUsuario}
+export {getUsuario,postUsuario,putUsuario,putUsuarioActivar,putUsuarioInactivar,deleteUsuario, getUsuarioEmail}
