@@ -8,11 +8,11 @@ export const validarExisteUsuario = async (id) => {
     }
 }
 
-export const validarEmail = async(email) => {   
-        const existeEmail = await Usuario.findOne({ email });
-        if (existeEmail) {
-            throw new Error(`El correo ${email} ya está registrado`);
-        }
-}
+export const validarEmail = async (correo) => {
+  const existeEmail = await Usuario.findOne({ email: correo });
+  if (existeEmail) {
+    throw new Error(`El correo ${correo} ya está registrado`);
+  }
+};
 
 
