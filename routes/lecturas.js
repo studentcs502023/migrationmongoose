@@ -1,29 +1,24 @@
 import { Router } from "express"
 import { check } from "express-validator"
-import { postlecturas, getlecturas, deletelecturas } from "../controllers/lecturas.controller.js"
-import validarResults from "../middlewares/validarResults.js"
+import  lecturasController  from "../controllers/lecturas.js"
+
 
 const router = Router()
 
 // ✅ CREAR LECTURA
 router.post(
-  "/",
-  [
-    check("userid")
-      .not().isEmpty()
-      .isMongoId(),
+  "/:idUsuario",
+  [ check("idUsuario").isMongoId()],
+  lecturasController.generarLecturaNumerologica
+);
 
-    check("tipo_lectura")
-      .not().isEmpty()
-      .isString(),
+router.post(
+  "/:idUsuario",
+  [ check("idUsuario").isMongoId()],
+  lecturasController.generarLecturaDiaria
+);
 
-    check("contenido")
-      .not().isEmpty()
-      .isString()
-  ],
-  validarResults,
-  postlecturas
-)
+
 
 // ✅ LISTAR LECTURAS POR USUARIO
 router.get(
@@ -31,18 +26,10 @@ router.get(
   [
     check("userid").isMongoId()
   ],
-  validarResults,
-  getlecturas
+  lecturasController.obtenerLecturasPorUsuario
 )
 
 // ✅ ELIMINAR LECTURA
-router.delete(
-  "/:id",
-  [
-    check("id").isMongoId()
-  ],
-  validarResults,
-  deletelecturas
-)
+
 
 export default router

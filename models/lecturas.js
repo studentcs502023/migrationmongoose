@@ -12,3 +12,5 @@ userid: {
 });
 
 export default mongoose.model("Lectura",lectura)
+
+

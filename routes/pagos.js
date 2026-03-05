@@ -1,9 +1,20 @@
 import express from "express"
 import { check } from "express-validator"
-import { postpagos, getpagos, putpagos } from "../controllers/pagos.controller.js"
-import validarResults from "../middlewares/validarResults.js"
+import { postpagos, getpagos, putpagos,deletepagos } from "../controllers/pagos.js"
+import validarResults from "../middlewares/validar-campos.js"
 
 const router = express.Router()
+
+
+router.delete(
+  "/:usuario_id",  // Usamos `:usuario_id` como parámetro de la URL
+  [
+    check("usuario_id").isMongoId()  // Validamos que el `usuario_id` sea un MongoDB ObjectId
+  ],
+  validarResults,  // Middleware para validar los resultados de las validaciones
+  deletepagos  // El controlador que maneja la eliminación
+);
+
 
 // ✅ CREAR PAGO
 router.post(

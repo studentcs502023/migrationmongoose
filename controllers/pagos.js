@@ -21,19 +21,22 @@ const postpagos = async (req, res) => {
 
 const deletepagos = async (req, res) => {
   try {
-    const { id } = req.params
+    // Extraemos el `usuario_id` de los parámetros de la URL
+    const { usuario_id } = req.params;
 
-    const pago = await modelspagos.findByIdAndDelete(id)
+    // Intentamos eliminar el pago del modelo usando el ID
+    const pago = await modelspagos.findOneAndDelete({ usuario_id });
 
     if (!pago) {
-      return res.status(404).json({ msg: "Pago no encontrado" })
+      return res.status(404).json({ msg: "Pago no encontrado" });
     }
 
-    res.json({ msg: "Pago eliminado correctamente" })
+    res.json({ msg: "Pago eliminado correctamente" });
   } catch (error) {
-    res.status(400).json({ error: error.message })
+    res.status(400).json({ error: error.message });
   }
-}
+};
+
 
 const getpagos = async (req, res) => {
   try {
@@ -45,4 +48,31 @@ const getpagos = async (req, res) => {
   }
 }
 
-export { postpagos, deletepagos, getpagos }
+
+const putpagos = async (req, res) => {
+  try {
+    const { id } = req.params;  // Extraemos el ID de la URL
+    const { monto, fecha_pago, fecha_vencimiento, metodo } = req.body;  // Extraemos los datos del cuerpo
+
+    // Verificamos si el pago existe
+    const pago = await modelspagos.findById(id);
+    if (!pago) {
+      return res.status(404).json({ msg: "Pago no encontrado" });
+    }
+
+    // Actualizamos los campos proporcionados
+    if (monto) pago.monto = monto;
+    if (fecha_pago) pago.fecha_pago = fecha_pago;
+    if (fecha_vencimiento) pago.fecha_vencimiento = fecha_vencimiento;
+    if (metodo) pago.metodo = metodo;
+
+    // Guardamos el pago actualizado
+    await pago.save();
+
+    res.json({ msg: "Pago actualizado correctamente", pago });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export { postpagos, deletepagos, getpagos,putpagos }
