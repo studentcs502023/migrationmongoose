@@ -2,22 +2,56 @@ import modelspagos from "../models/modelspagos.js"
 
 const postpagos = async (req, res) => {
   try {
-    const { usuarioid, monto, fecha_pago } = req.body
+    const {
+      usuario_id,
+      monto,
+      fecha_pago,
+      metodo
+    } = req.body;
+
+    // 1. Calcular fecha de vencimiento (+1 mes)
+    const fechaPago = new Date(fecha_pago);
+    const fechaVencimiento = new Date(fechaPago);
+    fechaVencimiento.setMonth(fechaVencimiento.getMonth() + 1);
 
     const pago = await modelspagos.create({
-      usuario_id: usuarioid,
+      usuario_id,
       monto,
-      fecha_pago
-    })
+      fecha_pago: fechaPago,
+      fecha_vencimiento: fechaVencimiento,
+      metodo
+    });
 
     res.status(201).json({
-      msg: "Pago registrado correctamente",
+      msg: "Suscripción activada por 1 mes",
       pago
-    })
+    });
+
   } catch (error) {
-    res.status(400).json({ error: error.message })
+    res.status(400).json({ error: error.message });
   }
-}
+};
+
+// const postpagos = async (req, res) => {
+//   try {
+//     const { usuario_id, monto, fecha_pago,fecha_vencimiento,metodo } = req.body
+
+//     const pago = await modelspagos.create({
+//       usuario_id,
+//       monto,
+//       fecha_pago,
+// fecha_vencimiento,
+// metodo
+//     })
+
+//     res.status(201).json({
+//       msg: "Pago registrado correctamente",
+//       pago
+//     })
+//   } catch (error) {
+//     res.status(400).json({ error: error.message })
+//   }
+// }
 
 const deletepagos = async (req, res) => {
   try {

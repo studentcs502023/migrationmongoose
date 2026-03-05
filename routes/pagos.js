@@ -1,7 +1,12 @@
 import express from "express"
 import { check } from "express-validator"
+<<<<<<< HEAD
 import { postpagos, getpagos, putpagos,deletepagos } from "../controllers/pagos.js"
 import validarResults from "../middlewares/validar-campos.js"
+=======
+import { postpagos, getpagos } from "../controllers/pagos.js"
+import  {validarCampos} from "../middlewares/validar-campos.js"
+>>>>>>> b46e2fb1a6e3d11aed1efc625ea4323ee896ee2e
 
 const router = express.Router()
 
@@ -26,7 +31,7 @@ router.post(
     check("fecha_vencimiento").isISO8601(),
     check("metodo").isIn(["tarjeta", "efectivo", "transferencia"])
   ],
-  validarResults,
+ validarCampos,
   postpagos
 )
 
@@ -36,22 +41,22 @@ router.get(
   [
     check("usuario_id").isMongoId()
   ],
-  validarResults,
+ validarCampos,
   getpagos
 )
 
 // ✅ ACTUALIZAR PAGO
-router.put(
-  "/:id",
-  [
-    check("id").isMongoId(),
-    check("monto").optional().isDecimal({ decimal_digits: "0,2" }),
-    check("fecha_pago").optional().isISO8601(),
-    check("fecha_vencimiento").optional().isISO8601(),
-    check("metodo").optional().isIn(["tarjeta", "efectivo", "transferencia"])
-  ],
-  validarResults,
-  putpagos
-)
+// router.put(
+//   "/:id",
+//   [
+//     check("id").isMongoId(),
+//     check("monto").optional().isDecimal({ decimal_digits: "0,2" }),
+//     check("fecha_pago").optional().isISO8601(),
+//     check("fecha_vencimiento").optional().isISO8601(),
+//     check("metodo").optional().isIn(["tarjeta", "efectivo", "transferencia"])
+//   ],
+//  validarCampos,
+//   putpagos
+// )
 
 export default router

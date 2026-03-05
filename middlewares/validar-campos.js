@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import { validationResult } from 'express-validator';
 
 // export const validarCampos = (req, res, next) => {
@@ -16,6 +17,9 @@
 // middlewares/validar-campos.js
 import { validationResult } from 'express-validator';
 
+=======
+import { validationResult } from "express-validator";
+>>>>>>> b46e2fb1a6e3d11aed1efc625ea4323ee896ee2e
 export const validarCampos = (req, res, next) => {
   // validationResult extrae los errores acumulados por check()
   const errors = validationResult(req);
